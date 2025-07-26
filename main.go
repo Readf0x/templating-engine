@@ -116,9 +116,5 @@ func main() {
 }
 
 func pft(char byte) (string, string) {
-	switch char {
-	case 'w':
-		return "w(", ");"
-	}
-	return "", ""
+	return fmt.Sprintf("%c(", char), ");"
 }
