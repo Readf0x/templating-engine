@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -15,15 +16,34 @@ func wb(b byte, o *os.File) {
 	o.Write([]byte{b})
 }
 
+const help = `The best templating engine
+
+Usage: te [FILE]...
+
+Arguments:
+  [FILE]...  File(s) to process. Must end with '.tet'
+
+Options:
+  -h, --help
+	Show this text`
+
 func main() {
 	if len(os.Args) == 1 {
-		println("No files")
+		fmt.Println("No arguments")
 		os.Exit(2)
 	} else {
-		for _, A := range os.Args[1:] {
+		offset := 1
+		switch os.Args[1] {
+		case "--help":
+			fallthrough
+		case "-h":
+			fmt.Println(help)
+			offset++
+		}
+		for _, A := range os.Args[offset:] {
 			if strings.HasSuffix(A, ".tet") {
 				outname := A[:len(A)-4]
-				println(outname)
+				fmt.Println(outname)
 				f, _ := os.Open(A)
 				defer f.Close()
 				fname := "build-" + strings.ReplaceAll(outname, "/", "_") + ".go"
