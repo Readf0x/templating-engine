@@ -27,6 +27,13 @@ Options:
   -h, --help
 	Show this text`
 
+const providedFunctions = ``+
+// Write
+// Writes out to finalized file.
+`func w(val any) {
+	out.Write([]byte(fmt.Sprint(val)))
+}`
+
 func main() {
 	if len(os.Args) == 1 {
 		fmt.Println("No arguments")
@@ -68,9 +75,7 @@ import (
 
 var out, _ = os.Create("`+outname+`")
 
-func w(val any) {
-	out.Write([]byte(fmt.Sprint(val)))
-}
+`+providedFunctions+`
 
 func main() {
 	defer out.Close()
@@ -80,8 +85,22 @@ func main() {
 				var prefix, suffix string
 				for i := 0; i < len(content); i++ {
 					s := content[i:]
+					if s[0] == '`' {
+						w("`+\"`\"+`", out)
+						i++
+					}
 					if len(s) > 1 {
 						switch s[:2] {
+						case "\\<":
+							if s[2] == '|' {
+								w("<|", out)
+								i += 3
+							}
+						case "\\|":
+							if s[2] == '>' {
+								w("|>", out)
+								i += 3
+							}
 						case "<|":
 							w("`);\n", out)
 							if s[2] == ':' {

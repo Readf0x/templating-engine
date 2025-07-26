@@ -7,7 +7,7 @@ Creating templating engine templates (\fI.tet\fR files) is quite simple and easy
 .IP
 .EX
 .B
-Hello, <| w("World!") |>
+Hello, \<| w("World!") \|>
 .EE
 .P
 
@@ -25,7 +25,7 @@ Exactly what you would expect. Because writing w() around everything gets a litt
 .IP
 .EX
 .B
-Hello, <|:w "World!" |>
+Hello, \<|:w "World!" \|>
 .EE
 .P
 
@@ -37,8 +37,8 @@ By default, "os" and "fmt" are already imported, as they are required for the ac
 .EX
 .B
 !!import:"strings" "time"
-
-Hello, <|:w strings.ToUpper("World! ") + time.Now().String() |>
+.B
+Hello, \<|:w strings.ToUpper("World! ") + time.Now().String() \|>
 .EE
 .P
 
