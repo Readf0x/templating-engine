@@ -28,8 +28,11 @@
 
             postInstall = ''
               mkdir -p $out/share/man/man1
+              mkdir -p $out/share/man/man7
               cp man/te.1 $out/share/man/man1
+              cp man/te.7 $out/share/man/man7
               gzip $out/share/man/man1/te.1
+              gzip $out/share/man/man7/te.7
             '';
 
             meta = {

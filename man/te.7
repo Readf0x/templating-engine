@@ -1,0 +1,51 @@
+.TH TE "7"
+.SH NAME
+te \- The best templating engine
+.SH "TEMPLATE LANGUAGE"
+Creating templating engine templates (\fI.tet\fR files) is quite simple and easy to understand. Everything outside a code block is placed into a write statement. Consider the following:
+
+.IP
+.EX
+.B
+Hello, <| w("World!") |>
+.EE
+.P
+
+This is transformed into:
+
+.IP
+.EX
+.B
+Hello, World!
+.EE
+.P
+
+Exactly what you would expect. Because writing w() around everything gets a little annoying, there's some syntactic sugar to make this easier to read.
+
+.IP
+.EX
+.B
+Hello, <|:w "World!" |>
+.EE
+.P
+
+As for the actual allowed code syntax, te actually generates golang and simply calls `go run <builder-file>.go`, the deletes the golang it generated. While this requires the go compiler at runtime, it has the benefit of allowing you to write processing code in a fully featured, statically typed language.
+
+By default, "os" and "fmt" are already imported, as they are required for the actual template generation code. If you wish to import anything else from the standard library, add an import directive like so:
+
+.IP
+.EX
+.B
+!!import:"strings" "time"
+
+Hello, <|:w strings.ToUpper("World! ") + time.Now().String() |>
+.EE
+.P
+
+The import directive must be the first line in the file, otherwise it will be treated as regular text.
+
+.SH "FUNCTIONS"
+.HP
+\fBw\fR Write
+.IP
+func w(val any) Writes out to finalized file.

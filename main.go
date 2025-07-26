@@ -50,18 +50,26 @@ func main() {
 				out, _ := os.Create(fname)
 				b, _ := io.ReadAll(f)
 				content := string(b)
+				var imports []string
+				if strings.HasPrefix(content, "!!import:") {
+					newline := strings.IndexByte(content, '\n') + 1
+					firstline := content[:newline]
+					imports = strings.Split(firstline[9:], " ")
+					content = content[newline:]
+				}
 				w(`//go:build ignore
 package main
 
 import (
 	"os"
 	"fmt"
+	`+strings.Join(imports, "\n  ")+`
 )
 
 var out, _ = os.Create("`+outname+`")
 
-func w(str string) {
-	out.Write([]byte(fmt.Sprint(str)))
+func w(val any) {
+	out.Write([]byte(fmt.Sprint(val)))
 }
 
 func main() {
