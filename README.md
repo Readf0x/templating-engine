@@ -11,7 +11,7 @@ Instead of explaining why it's the best, here's an example:
         <| posts := []string{ "Foo", "Bar", "Baz" } |>
         <ul>
             <| for _, post := range posts { |>
-                <li><|:p post |></li>
+                <li><|:w post |></li>
             <| } |>
         </ul>
     </body>
