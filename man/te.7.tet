@@ -1,4 +1,4 @@
-!!import:"io" "strings"
+!!import:"strings"
 .TH TE "7"
 .SH NAME
 te \- The best templating engine
@@ -39,9 +39,9 @@ Hello, \<|:w "World!" \|>
 .EE
 .P
 
-As for the actual allowed code syntax, te actually generates golang and simply calls `go run <builder-file>.go`, the deletes the golang it generated. While this requires the go compiler at runtime, it has the benefit of allowing you to write processing code in a fully featured, statically typed language.
+As for the actual allowed code syntax, te actually generates golang and simply calls `go run <builder-file>.go`, then deletes the golang it generated. While this requires the go compiler at runtime, it has the benefit of allowing you to write processing code in a fully featured, statically typed language.
 
-By default, "os" and "fmt" are already imported, as they are required for the actual template generation code. If you wish to import anything else from the standard library, add an import directive like so:
+By default, `os', `fmt', and `io' are already imported, as they are required for the actual template generation code. If you wish to import anything else from the standard library, add an import directive like so:
 
 .IP
 .EX
@@ -61,10 +61,8 @@ The import directive must be the first line in the file, otherwise it will be tr
     description string
   }
 
-  file, _ := os.Open("main.go")
-  defer file.Close()
-  b, _ := io.ReadAll(file)
-  buffer := string(b)
+  var buffer string
+  f("main.go", &buffer)
   lines := strings.Split(buffer, "\n")
   var start, stop int
   for i, line := range lines {
@@ -88,6 +86,7 @@ The import directive must be the first line in the file, otherwise it will be tr
   }
 |>
 .SH "FUNCTIONS"
+As a reminder, any function can be called using the `:' language feature, i.e. `:w' for write.
 <| for _, f := range pFuncs { |>
 .HP
 <|:w f.longName |>

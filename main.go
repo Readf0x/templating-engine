@@ -32,8 +32,18 @@ const providedFunctions = ``+
 // Write
 // Writes out to finalized file.
 `func w(val any) {
-	out.Write([]byte(fmt.Sprint(val)))
-}`
+	fmt.Fprint(out, val)
+}
+`+
+// File
+// Reads file into buffer
+`func f(path string, buffer *string) {
+  file, _ := os.Open(path)
+  defer file.Close()
+  b, _ := io.ReadAll(file)
+  *buffer = string(b)
+}
+`
 //te:stop
 
 func main() {
@@ -72,6 +82,7 @@ package main
 import (
 	"os"
 	"fmt"
+	"io"
 	`+strings.Join(imports, "\n  ")+`
 )
 
