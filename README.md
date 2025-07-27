@@ -19,7 +19,7 @@ Instead of explaining why it's the best, here's an example:
 ```
 after processing, this becomes exactly what you would expect:
 ```go
-print(`<!DOCTYPE html>
+w(`<!DOCTYPE html>
 <html>
     <head>
         <title>Example</title>
@@ -27,13 +27,13 @@ print(`<!DOCTYPE html>
     <body>
 `);
 posts := []string{ "Foo", "Bar", "Baz" };
-print(`        <ul>
+w(`        <ul>
 `);
 for _, post := range posts {
-print(`                <li>"); print(post); print("</li>
+w(`                <li>"); w(post); w("</li>
 `);
 }
-print(`        </ul>
+w(`        </ul>
     </body>
 </html>
 `)
