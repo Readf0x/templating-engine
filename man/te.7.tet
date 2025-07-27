@@ -1,3 +1,4 @@
+!!import:"io" "strings"
 .TH TE "7"
 .SH NAME
 te \- The best templating engine
@@ -43,9 +44,44 @@ Hello, \<|:w strings.ToUpper("World! ") + time.Now().String() \|>
 .P
 
 The import directive must be the first line in the file, otherwise it will be treated as regular text.
+<|
+  // Provided functions
+  type pFunc struct {
+    longName string
+    definition string
+    description string
+  }
 
+  file, _ := os.Open("main.go")
+  defer file.Close()
+  b, _ := io.ReadAll(file)
+  buffer := string(b)
+  lines := strings.Split(buffer, "\n")
+  var start, stop int
+  for i, line := range lines {
+    if line == "//te:start" {
+      start = i
+    } else if line == "//te:stop" {
+      stop = i
+      break
+    }
+  }
+  lines = lines[start+1:stop]
+  var pFuncs []pFunc
+  for i := 0; i < len(lines); i++ {
+    if strings.HasPrefix(lines[i], "`func") {
+      pFuncs = append(pFuncs, pFunc{
+        longName: lines[i-2][3:],
+        description: lines[i-1][3:],
+        definition: lines[i][1:len(lines[i])-2],
+      })
+    }
+  }
+|>
 .SH "FUNCTIONS"
+<| for _, f := range pFuncs { |>
 .HP
-\fBw\fR Write
+<|:w f.longName |>
 .IP
-func w(val any) Writes out to finalized file.
+<|:w f.definition |> <|:w f.description |>
+<| } |>

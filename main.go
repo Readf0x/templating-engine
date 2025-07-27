@@ -28,11 +28,13 @@ Options:
 	Show this text`
 
 const providedFunctions = ``+
+//te:start
 // Write
 // Writes out to finalized file.
 `func w(val any) {
 	out.Write([]byte(fmt.Sprint(val)))
 }`
+//te:stop
 
 func main() {
 	if len(os.Args) == 1 {
@@ -83,11 +85,14 @@ func main() {
 				w("w(`", out)
 				lft := false
 				var prefix, suffix string
+				var code bool
 				for i := 0; i < len(content); i++ {
 					s := content[i:]
 					if s[0] == '`' {
-						w("`+\"`\"+`", out)
-						i++
+						if !code {
+							w("`+\"`\"+`", out)
+							i++
+						}
 					}
 					if len(s) > 1 {
 						switch s[:2] {
@@ -103,6 +108,7 @@ func main() {
 							}
 						case "<|":
 							w("`);\n", out)
+							code = true
 							if s[2] == ':' {
 								lft = true
 								prefix, suffix = pft(s[3])
@@ -111,6 +117,7 @@ func main() {
 							}
 							i += 2
 						case "|>":
+							code = false
 							if lft {
 								w(suffix, out)
 								lft = false
@@ -124,6 +131,7 @@ func main() {
 				w("`);\n}\n", out)
 
 				cmd := exec.Command("go", "run", fname)
+				cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 				if err := cmd.Run(); err != nil {
 					log.Fatal(err)
 				}

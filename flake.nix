@@ -27,6 +27,7 @@
             vendorHash = null;
 
             postInstall = ''
+              $out/bin/te man/te.7.tet
               mkdir -p $out/share/man/man1
               mkdir -p $out/share/man/man7
               cp man/te.1 $out/share/man/man1
