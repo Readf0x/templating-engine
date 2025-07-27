@@ -40,6 +40,9 @@ w(`        </ul>
 ```
 Golang!
 
-Yes, this is an html to golang to html processor. Genius, I know. That's why I didn't come up with it. Zozin did!
+Yes, this is an plaintext to golang to plaintext processor. Genius, I know. That's why I didn't come up with it. Zozin did!
 
+You can actually use this with any plaintext document, or in theory actually any file but, I'm not sure what kind of edge cases that might introduce.
+
+For a more complicated example, see the [section 7 manpage](./man/te.7.tet)
 
