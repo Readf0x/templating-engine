@@ -62,7 +62,7 @@ func main() {
 		for _, A := range os.Args[offset:] {
 			if strings.HasSuffix(A, ".tet") {
 				outname := A[:len(A)-4]
-				fmt.Println(outname)
+				fmt.Printf("writing to %s\n", outname)
 				f, _ := os.Open(A)
 				defer f.Close()
 				fname := "build-" + strings.ReplaceAll(outname, "/", "_") + ".go"
