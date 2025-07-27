@@ -17,6 +17,15 @@ This is transformed into:
 .IP
 .EX
 .B
+w(`Hello, `); w("World!");
+.EE
+.P
+
+Which is then fed into the go compiler to become:
+
+.IP
+.EX
+.B
 Hello, World!
 .EE
 .P
