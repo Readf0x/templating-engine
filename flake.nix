@@ -31,7 +31,6 @@
               for i in {1,7}; do
                 mkdir -p $out/share/man/man$i
                 cp man/te.$i $out/share/man/man$i
-                gzip $out/share/man/man$i/te.$i
               done
             '';
 
