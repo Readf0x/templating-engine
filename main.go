@@ -41,7 +41,7 @@ const providedFunctions = ``+
   file, _ := os.Open(path)
   defer file.Close()
   b, _ := io.ReadAll(file)
-  fmt.Fprint(out, b)
+  out.Write(b)
 }
 `+
 // Read
