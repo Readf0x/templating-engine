@@ -159,6 +159,17 @@ func main() {
 							}
 							w(";w(`", out)
 							i += 2
+							if s[2:4] == "<|" {
+								w("`);\n", out)
+								code = true
+								if s[2] == ':' {
+									lft = true
+									prefix, suffix = pft(s[3])
+									w(prefix, out)
+									i += 2
+								}
+								i += 2
+							}
 						}
 					}
 					wb(content[i], out)

@@ -5,9 +5,8 @@
         <title>Example</title>
     </head>
     <body>
-        <| posts := []string{ "Foo", "Bar", "Baz" } |>
         <ul>
-            <| for _, post := range posts { |>
+            <| posts := []string{ "Foo", "Bar", "Baz" } |><| for _, post := range posts { |>
                 <li><|:w strings.ToUpper(post) |></li>
             <| } |>
         </ul>
