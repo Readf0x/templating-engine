@@ -36,8 +36,17 @@ const providedFunctions = ``+
 }
 `+
 // File
-// Reads file into buffer
-`func f(path string, buffer *string) {
+// Reads file, writes it out to finalized file.
+`func f(path string) {
+  file, _ := os.Open(path)
+  defer file.Close()
+  b, _ := io.ReadAll(file)
+  fmt.Fprint(out, b)
+}
+`+
+// Read
+// Reads file into buffer.
+`func r(path string, buffer *string) {
   file, _ := os.Open(path)
   defer file.Close()
   b, _ := io.ReadAll(file)

@@ -62,7 +62,7 @@ The import directive must be the first line in the file, otherwise it will be tr
   }
 
   var buffer string
-  f("main.go", &buffer)
+  r("main.go", &buffer)
   lines := strings.Split(buffer, "\n")
   var start, stop int
   for i, line := range lines {
