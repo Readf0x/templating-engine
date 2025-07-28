@@ -159,7 +159,7 @@ func main() {
 							}
 							w(";w(`", out)
 							i += 2
-							if s[2:4] == "<|" {
+							if len(s) >= 4 && s[2:4] == "<|" {
 								w("`);\n", out)
 								code = true
 								if s[2] == ':' {
