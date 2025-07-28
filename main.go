@@ -162,9 +162,9 @@ func main() {
 							if len(s) >= 4 && s[2:4] == "<|" {
 								w("`);\n", out)
 								code = true
-								if s[2] == ':' {
+								if s[4] == ':' {
 									lft = true
-									prefix, suffix = pft(s[3])
+									prefix, suffix = pft(s[5])
 									w(prefix, out)
 									i += 2
 								}
