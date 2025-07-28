@@ -40,8 +40,43 @@ Hello, \<|:w "World!" \|>
 .P
 
 As for the actual allowed code syntax, te actually generates golang and simply calls `go run <builder-file>.go`, then deletes the golang it generated. While this requires the go compiler at runtime, it has the benefit of allowing you to write processing code in a fully featured, statically typed language.
+<|
+  // Provided functions
+  type pFunc struct {
+    longName string
+    definition string
+    description string
+  }
 
-By default, `os', `fmt', and `io' are already imported, as they are required for the actual template generation code. If you wish to import anything else from the standard library, add an import directive like so:
+  var buffer string
+  r("main.go", &buffer)
+  lines := strings.Split(buffer, "\n")
+
+  var start, stop, imports, imports_end int
+  for i, line := range lines {
+    if line == "//te:start" {
+      start = i
+    } else if line == "//te:stop" {
+      stop = i
+    } else if line == "//te:imports" {
+      imports = i
+    } else if line == "`+//te:imports_end" {
+      imports_end = i
+      break
+    }
+  }
+  
+  var importList []string
+  var finalImport string
+  for i, line := range lines[imports+2:imports_end] {
+    if i == len(lines[imports+2:imports_end]) - 1 {
+      finalImport = line[1:]
+    } else {
+      importList = append(importList, line[1:])
+    }
+  }
+|>
+By default, <|:w strings.Join(importList, ", ") |>, and <|:w finalImport |> are already imported, as they are required for the actual template generation code. If you wish to import anything else from the standard library, add an import directive like so:
 
 .IP
 .EX
@@ -54,25 +89,6 @@ Hello, \<|:w strings.ToUpper("World! ") + time.Now().String() \|>
 
 The import directive must be the first line in the file, otherwise it will be treated as regular text.
 <|
-  // Provided functions
-  type pFunc struct {
-    longName string
-    definition string
-    description string
-  }
-
-  var buffer string
-  r("main.go", &buffer)
-  lines := strings.Split(buffer, "\n")
-  var start, stop int
-  for i, line := range lines {
-    if line == "//te:start" {
-      start = i
-    } else if line == "//te:stop" {
-      stop = i
-      break
-    }
-  }
   lines = lines[start+1:stop]
   var pFuncs []pFunc
   for i := 0; i < len(lines); i++ {

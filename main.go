@@ -52,6 +52,16 @@ const providedFunctions = ``+
   b, _ := io.ReadAll(file)
   *buffer = string(b)
 }
+`+
+// Process
+// Processes file(s) with te
+`func p(files []string) {
+	cmd := exec.Command("te", files...)
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	if err := cmd.Run(); err != nil {
+		println(err)
+	}
+}
 `
 //te:stop
 
@@ -89,10 +99,15 @@ func main() {
 package main
 
 import (
+`+
+//te:imports
+`
 	"os"
 	"fmt"
 	"io"
-	`+strings.Join(imports, "\n  ")+`
+	"os/exec"
+`+//te:imports_end
+	strings.Join(imports, "\n  ")+`
 )
 
 var out, _ = os.Create("`+outname+`")
